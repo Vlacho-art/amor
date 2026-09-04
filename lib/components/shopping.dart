@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 const kPink = Color(0xFFE6007E);
 const kCardBg = Color(0xFFF5F5F7);
 const kGreyText = Color(0xFF9B9BA1);
+const kBorderGrey = Color(0xFFE0E0E5);
 
 class CartItem {
   final String name;
@@ -77,23 +78,40 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // --- Escalado responsivo para pantallas pequeñas y grandes (ej. Pixel 7) ---
+    final width = MediaQuery.of(context).size.width;
+    // Referencia: diseño base pensado para ~375px de ancho.
+    // Se agrega un "boost" (1.15) para que en celulares reales (Pixel 7, etc.)
+    // el contenido se vea grande y legible, no diminuto.
+    final scale = (width / 375).clamp(1.0, 1.3) * 1.15;
+    final horizontalPadding = 16.0 * scale;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: const Icon(
-          Icons.arrow_back_ios_new,
-          color: Colors.black,
-          size: 20,
-        ),
-        title: const Text(
-          'Shopping Cart',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
+      backgroundColor: kCardBg,
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(kToolbarHeight),
+        child: Container(
+          decoration: const BoxDecoration(
+            color: Colors.white,
+            border: Border(bottom: BorderSide(color: kBorderGrey, width: 1)),
+          ),
+          child: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 0,
+            centerTitle: true,
+            leading: Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.black,
+              size: 20 * scale,
+            ),
+            title: Text(
+              'Shopping Cart',
+              style: TextStyle(
+                color: Colors.black,
+                fontWeight: FontWeight.w600,
+                fontSize: 18 * scale,
+              ),
+            ),
           ),
         ),
       ),
@@ -101,58 +119,78 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         children: [
           Expanded(
             child: ListView(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.fromLTRB(
+                horizontalPadding,
+                18,
+                horizontalPadding,
+                8,
+              ),
               children: [
                 ...List.generate(
                   _items.length,
                   (i) => Padding(
                     padding: const EdgeInsets.only(bottom: 16),
-                    child: _buildCartCard(i),
+                    child: _buildCartCard(i, scale),
                   ),
                 ),
                 const SizedBox(height: 8),
-                _buildSummaryRow('Subtotal', _subtotal),
+                _buildSummaryRow('Subtotal', _subtotal, scale),
                 const SizedBox(height: 10),
-                _buildSummaryRow('Shipping', _shipping),
+                _buildSummaryRow('Shipping', _shipping, scale),
                 const SizedBox(height: 10),
-                _buildSummaryRow('Tax', _tax),
+                _buildSummaryRow('Tax', _tax, scale),
                 const SizedBox(height: 12),
                 _buildDashedDivider(),
                 const SizedBox(height: 12),
-                _buildSummaryRow('Total', _total, isTotal: true),
+                _buildSummaryRow('Total', _total, scale, isTotal: true),
               ],
             ),
           ),
-          SafeArea(
-            top: false,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
-              child: SizedBox(
-                width: double.infinity,
-                height: 52,
-                child: ElevatedButton(
-                  onPressed: () {},
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: kPink,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(26),
-                    ),
-                    elevation: 0,
-                  ),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        'Proceed to Checkout',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w600,
-                          fontSize: 16,
-                        ),
+          Container(
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              border: Border(top: BorderSide(color: kBorderGrey, width: 1)),
+            ),
+            child: SafeArea(
+              top: false,
+              child: Padding(
+                padding: EdgeInsets.fromLTRB(
+                  horizontalPadding,
+                  12,
+                  horizontalPadding,
+                  12,
+                ),
+                child: SizedBox(
+                  width: double.infinity,
+                  height: 52,
+                  child: ElevatedButton(
+                    onPressed: () {},
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kPink,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
                       ),
-                      SizedBox(width: 8),
-                      Icon(Icons.arrow_forward, color: Colors.white, size: 18),
-                    ],
+                      elevation: 0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Proceed to Checkout',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 16 * scale,
+                          ),
+                        ),
+                        SizedBox(width: 8 * scale),
+                        Icon(
+                          Icons.arrow_forward,
+                          color: Colors.white,
+                          size: 18 * scale,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
               ),
@@ -163,26 +201,33 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
-  Widget _buildCartCard(int index) {
+  Widget _buildCartCard(int index, double scale) {
     final item = _items[index];
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12 * scale),
       decoration: BoxDecoration(
-        color: kCardBg,
+        color: Colors.white,
         borderRadius: BorderRadius.circular(16),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 3),
+          ),
+        ],
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
-            width: 56,
-            height: 56,
+            width: 56 * scale,
+            height: 56 * scale,
             decoration: BoxDecoration(
               gradient: item.imageGradient,
               borderRadius: BorderRadius.circular(12),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12 * scale),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -192,18 +237,20 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                     Expanded(
                       child: Text(
                         item.name,
-                        style: const TextStyle(
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
                           fontWeight: FontWeight.w600,
-                          fontSize: 14.5,
+                          fontSize: 14.5 * scale,
                           color: Colors.black,
                         ),
                       ),
                     ),
                     InkWell(
                       onTap: () => _removeItem(index),
-                      child: const Icon(
+                      child: Icon(
                         Icons.close,
-                        size: 18,
+                        size: 18 * scale,
                         color: kGreyText,
                       ),
                     ),
@@ -212,7 +259,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 const SizedBox(height: 2),
                 Text(
                   '${item.variantLabel}: ${item.variantValue}',
-                  style: const TextStyle(fontSize: 12.5, color: kGreyText),
+                  style: TextStyle(fontSize: 12.5 * scale, color: kGreyText),
                 ),
                 const SizedBox(height: 8),
                 Row(
@@ -220,13 +267,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                   children: [
                     Text(
                       '\$${item.price.toStringAsFixed(2)}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: kPink,
                         fontWeight: FontWeight.w700,
-                        fontSize: 15,
+                        fontSize: 15 * scale,
                       ),
                     ),
-                    _buildQuantityStepper(index, item.quantity),
+                    _buildQuantityStepper(index, item.quantity, scale),
                   ],
                 ),
               ],
@@ -237,10 +284,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
-  Widget _buildQuantityStepper(int index, int quantity) {
+  Widget _buildQuantityStepper(int index, int quantity, double scale) {
     return Container(
       decoration: BoxDecoration(
-        border: Border.all(color: const Color(0xFFE0E0E5)),
+        border: Border.all(color: kBorderGrey),
         borderRadius: BorderRadius.circular(8),
         color: Colors.white,
       ),
@@ -249,11 +296,11 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         children: [
           InkWell(
             onTap: () => _updateQuantity(index, -1),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Text(
                 '-',
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: TextStyle(fontSize: 16 * scale, color: Colors.black),
               ),
             ),
           ),
@@ -261,16 +308,19 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: Text(
               '$quantity',
-              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                fontSize: 14 * scale,
+                fontWeight: FontWeight.w600,
+              ),
             ),
           ),
           InkWell(
             onTap: () => _updateQuantity(index, 1),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               child: Text(
                 '+',
-                style: TextStyle(fontSize: 16, color: Colors.black),
+                style: TextStyle(fontSize: 16 * scale, color: Colors.black),
               ),
             ),
           ),
@@ -279,14 +329,19 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     );
   }
 
-  Widget _buildSummaryRow(String label, double value, {bool isTotal = false}) {
+  Widget _buildSummaryRow(
+    String label,
+    double value,
+    double scale, {
+    bool isTotal = false,
+  }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           label,
           style: TextStyle(
-            fontSize: isTotal ? 16 : 14,
+            fontSize: (isTotal ? 16 : 14) * scale,
             fontWeight: isTotal ? FontWeight.w700 : FontWeight.w400,
             color: isTotal ? Colors.black : kGreyText,
           ),
@@ -294,7 +349,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         Text(
           '\$${value.toStringAsFixed(2)}',
           style: TextStyle(
-            fontSize: isTotal ? 18 : 14,
+            fontSize: (isTotal ? 18 : 14) * scale,
             fontWeight: isTotal ? FontWeight.w700 : FontWeight.w400,
             color: Colors.black,
           ),
@@ -304,25 +359,9 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
   }
 
   Widget _buildDashedDivider() {
-    return SizedBox(
+    return const SizedBox(
       height: 1,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final dashCount = (constraints.constrainWidth() / 10).floor();
-          return Flex(
-            direction: Axis.horizontal,
-            children: List.generate(dashCount, (_) {
-              return const SizedBox(
-                width: 5,
-                height: 1,
-                child: DecoratedBox(
-                  decoration: BoxDecoration(color: Color(0xFFE0E0E5)),
-                ),
-              );
-            }),
-          );
-        },
-      ),
+      child: DecoratedBox(decoration: BoxDecoration(color: kBorderGrey)),
     );
   }
 }
