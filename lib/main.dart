@@ -35,7 +35,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  final bool _obscurePassword = true;
 
   static const Color kPink = Color(0xFFE0245E);
   static const Color kDarkText = Color(0xFF1A1A2E);
@@ -228,12 +228,18 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
       height: 56,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<void>(
+              builder: (_) => const Home(),
+            ),
+          );
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: kPink,
           foregroundColor: Colors.white,
           elevation: 4,
-          shadowColor: kPink.withOpacity(0.4),
+          shadowColor: kPink.withValues(alpha: 0.4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
