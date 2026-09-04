@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
 
   final Set<int> favoriteProducts = <int>{1};
 
-  final categories = const ['All', 'Toys', 'Lingerie', 'Well'];
+  final categories = const ['All', 'Toys', 'Lingerie', 'Wellness'];
 
   final products = const [
     _Product(
@@ -200,28 +200,6 @@ class _HomeState extends State<Home> {
           ),
 
           const Spacer(),
-<<<<<<< HEAD
-          const Icon(Icons.search, size: 15, color: Color(0xFF536273)),
-          const SizedBox(width: 15),
-          IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/shopping'),
-            padding: EdgeInsets.zero,
-            constraints: const BoxConstraints(),
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: [
-                const Icon(Icons.shopping_bag_outlined,
-                    size: 17, color: Color(0xFF536273)),
-                Positioned(
-                  right: -5,
-                  top: -6,
-                  child: Container(
-                    padding: const EdgeInsets.all(2),
-                    decoration: const BoxDecoration(
-                        color: pink, shape: BoxShape.circle),
-                    child: const Text('2',
-                        style: TextStyle(color: Colors.white, fontSize: 7)),
-=======
 
           Icon(Icons.search, size: sp(28), color: const Color(0xFF536273)),
 
@@ -256,11 +234,10 @@ class _HomeState extends State<Home> {
                       fontWeight: FontWeight.w800,
                       height: 1,
                     ),
->>>>>>> d43049cdc05f0871af7c9d551e1a6cce00fdf183
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
@@ -335,7 +312,7 @@ class _HomeState extends State<Home> {
           // IMAGEN
           // =====================================================
           Expanded(
-            flex: 12,
+            flex: 13,
             child: GestureDetector(
               onTap: () {
                 Navigator.of(context).push(
