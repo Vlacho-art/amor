@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'descrit.dart';
 import 'shopping.dart';
 
@@ -56,13 +57,19 @@ class _HomeState extends State<Home> {
     ),
   ];
 
-  // Escala para Pixel 7
+  // =========================================================
+  // ESCALA RESPONSIVA
+  // =========================================================
+
   late double _s;
 
   void _computeScale(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    _s = (width / 393).clamp(0.95, 1.15);
+    // Escala aumentada para celulares.
+    // Antes llegaba máximo a 1.25.
+    // Ahora puede llegar hasta 1.40.
+    _s = (width / 390).clamp(1.0, 1.40);
   }
 
   double sp(double base) => base * _s;
@@ -80,26 +87,37 @@ class _HomeState extends State<Home> {
 
             Expanded(
               child: SingleChildScrollView(
-                padding: EdgeInsets.fromLTRB(sp(12), sp(8), sp(12), sp(10)),
+                padding: EdgeInsets.fromLTRB(sp(16), sp(12), sp(16), sp(14)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildCategories(),
 
-                    SizedBox(height: sp(16)),
+                    SizedBox(height: sp(22)),
 
-                    // TÍTULO
+                    // =================================================
+                    // TITULO
+                    // =================================================
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Text(
-                          'Featured Products',
-                          style: TextStyle(
-                            fontSize: sp(19),
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF20252B),
+                        Expanded(
+                          child: Text(
+                            'Featured Products',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: sp(20),
+                              fontWeight: FontWeight.w700,
+                              height: 1.2,
+                              color: const Color(0xFF20252A),
+                            ),
                           ),
                         ),
+
+                        SizedBox(width: sp(12)),
 
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -107,23 +125,26 @@ class _HomeState extends State<Home> {
                             Text(
                               'Filters',
                               style: TextStyle(
-                                fontSize: sp(15),
-                                color: pink,
+                                fontFamily: 'Roboto',
+                                fontSize: sp(14),
                                 fontWeight: FontWeight.w600,
+                                color: pink,
                               ),
                             ),
 
-                            SizedBox(width: sp(5)),
+                            SizedBox(width: sp(6)),
 
-                            Icon(Icons.tune, size: sp(17), color: pink),
+                            Icon(Icons.tune, size: sp(19), color: pink),
                           ],
                         ),
                       ],
                     ),
 
-                    SizedBox(height: sp(10)),
+                    SizedBox(height: sp(14)),
 
+                    // =================================================
                     // PRODUCTOS
+                    // =================================================
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
@@ -131,15 +152,16 @@ class _HomeState extends State<Home> {
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisCount: 2,
 
-                        crossAxisSpacing: sp(10),
-                        mainAxisSpacing: sp(10),
+                        crossAxisSpacing: sp(12),
+                        mainAxisSpacing: sp(14),
 
-                        // Tarjetas un poquito más altas
-                        // para evitar el overflow amarillo
-                        childAspectRatio: 0.61,
+                        // Tarjetas más altas para que
+                        // las letras grandes tengan espacio.
+                        childAspectRatio: 0.64,
                       ),
-                      itemBuilder: (_, index) =>
-                          _buildProduct(products[index], index),
+                      itemBuilder: (_, index) {
+                        return _buildProduct(products[index], index);
+                      },
                     ),
                   ],
                 ),
@@ -159,46 +181,45 @@ class _HomeState extends State<Home> {
 
   Widget _buildHeader() {
     return Padding(
-      padding: EdgeInsets.fromLTRB(sp(16), sp(16), sp(16), sp(10)),
+      padding: EdgeInsets.fromLTRB(sp(18), sp(14), sp(18), sp(10)),
       child: Row(
         children: [
-          Icon(Icons.favorite, color: pink, size: sp(24)),
+          Icon(Icons.favorite, color: pink, size: sp(28)),
 
-          SizedBox(width: sp(8)),
+          SizedBox(width: sp(9)),
 
           Text(
             "L'Amour",
             style: TextStyle(
-              fontSize: sp(22),
+              fontFamily: 'Roboto',
+              fontSize: sp(24),
               fontWeight: FontWeight.w800,
-              color: const Color(0xFF20252B),
+              height: 1.1,
+              color: const Color(0xFF20252A),
             ),
           ),
 
           const Spacer(),
 
-          Icon(Icons.search, size: sp(24), color: const Color(0xFF536273)),
+          Icon(Icons.search, size: sp(28), color: const Color(0xFF536273)),
 
-          SizedBox(width: sp(20)),
+          SizedBox(width: sp(22)),
 
           Stack(
             clipBehavior: Clip.none,
             children: [
               Icon(
                 Icons.shopping_bag_outlined,
-                size: sp(26),
+                size: sp(30),
                 color: const Color(0xFF536273),
               ),
 
               Positioned(
-                right: -sp(7),
-                top: -sp(8),
+                right: -sp(8),
+                top: -sp(9),
                 child: Container(
-                  padding: EdgeInsets.all(sp(3)),
-                  constraints: BoxConstraints(
-                    minWidth: sp(17),
-                    minHeight: sp(17),
-                  ),
+                  width: sp(22),
+                  height: sp(22),
                   alignment: Alignment.center,
                   decoration: const BoxDecoration(
                     color: pink,
@@ -207,9 +228,11 @@ class _HomeState extends State<Home> {
                   child: Text(
                     '2',
                     style: TextStyle(
+                      fontFamily: 'Roboto',
                       color: Colors.white,
-                      fontSize: sp(10),
-                      fontWeight: FontWeight.w700,
+                      fontSize: sp(12),
+                      fontWeight: FontWeight.w800,
+                      height: 1,
                     ),
                   ),
                 ),
@@ -222,16 +245,18 @@ class _HomeState extends State<Home> {
   }
 
   // =========================================================
-  // CATEGORÍAS
+  // CATEGORIAS
   // =========================================================
 
   Widget _buildCategories() {
     return SizedBox(
-      height: sp(42),
+      height: sp(48),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
-        separatorBuilder: (_, _) => SizedBox(width: sp(8)),
+        separatorBuilder: (_, _) {
+          return SizedBox(width: sp(10));
+        },
         itemBuilder: (_, index) {
           final selected = selectedCategory == index;
 
@@ -242,24 +267,24 @@ class _HomeState extends State<Home> {
               });
             },
             child: Container(
-              padding: EdgeInsets.symmetric(horizontal: sp(18)),
+              padding: EdgeInsets.symmetric(horizontal: sp(20)),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: selected ? pink : Colors.white,
-                borderRadius: BorderRadius.circular(7),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: selected ? pink : const Color(0xFFE2E5E9),
+                  color: selected ? pink : const Color(0xFFD5DADE),
+                  width: 1,
                 ),
               ),
               child: Text(
                 categories[index],
                 style: TextStyle(
-                  fontSize: sp(15),
-
-                  // Un poquito más gruesa
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-
+                  fontFamily: 'Roboto',
+                  fontSize: sp(14),
+                  height: 1,
                   color: selected ? Colors.white : const Color(0xFF4F5965),
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 ),
               ),
             ),
@@ -270,22 +295,22 @@ class _HomeState extends State<Home> {
   }
 
   // =========================================================
-  // PRODUCTOS
+  // PRODUCTO
   // =========================================================
 
   Widget _buildProduct(_Product product, int index) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(9),
-        border: Border.all(color: const Color(0xFFE7E9EC)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE1E5E8), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // =================================================
+          // =====================================================
           // IMAGEN
-          // =================================================
+          // =====================================================
           Expanded(
             flex: 13,
             child: GestureDetector(
@@ -301,24 +326,31 @@ class _HomeState extends State<Home> {
                     decoration: BoxDecoration(
                       color: product.background,
                       borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(9),
+                        top: Radius.circular(12),
                       ),
                     ),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(9),
+                        top: Radius.circular(12),
                       ),
                       child: Image.asset(
                         product.imagePath,
                         width: double.infinity,
                         height: double.infinity,
+
+                        // Mantiene la imagen sin deformarla.
                         fit: BoxFit.cover,
+
+                        // Máxima calidad disponible.
+                        filterQuality: FilterQuality.high,
+
                         alignment: Alignment.center,
+
                         errorBuilder: (_, _, _) {
                           return Center(
                             child: Icon(
                               product.icon,
-                              size: sp(38),
+                              size: sp(45),
                               color: Colors.black.withValues(alpha: 0.35),
                             ),
                           );
@@ -327,35 +359,41 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
+                  // =================================================
                   // SALE
+                  // =================================================
                   if (product.dark)
                     Positioned(
-                      left: sp(7),
-                      top: sp(7),
+                      left: sp(10),
+                      top: sp(10),
                       child: Container(
                         padding: EdgeInsets.symmetric(
-                          horizontal: sp(7),
-                          vertical: sp(4),
+                          horizontal: sp(11),
+                          vertical: sp(6),
                         ),
                         decoration: BoxDecoration(
                           color: pink,
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           'SALE',
                           style: TextStyle(
+                            fontFamily: 'Roboto',
                             color: Colors.white,
-                            fontSize: sp(10),
-                            fontWeight: FontWeight.w700,
+                            fontSize: sp(12),
+                            fontWeight: FontWeight.w800,
+                            height: 1,
                           ),
                         ),
                       ),
                     ),
 
+                  // =================================================
                   // FAVORITO
+                  // =================================================
                   Positioned(
-                    right: sp(7),
-                    top: sp(7),
+                    right: sp(10),
+                    top: sp(10),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -368,7 +406,9 @@ class _HomeState extends State<Home> {
                       },
                       child: product.dark
                           ? Container(
-                              padding: EdgeInsets.all(sp(5)),
+                              width: sp(36),
+                              height: sp(36),
+                              alignment: Alignment.center,
                               decoration: const BoxDecoration(
                                 color: Color(0xFFEDEFF1),
                                 shape: BoxShape.circle,
@@ -377,7 +417,7 @@ class _HomeState extends State<Home> {
                                 favoriteProducts.contains(index)
                                     ? Icons.favorite
                                     : Icons.favorite_border,
-                                size: sp(16),
+                                size: sp(21),
                                 color: favoriteProducts.contains(index)
                                     ? pink
                                     : const Color(0xFF4F5965),
@@ -387,7 +427,7 @@ class _HomeState extends State<Home> {
                               favoriteProducts.contains(index)
                                   ? Icons.favorite
                                   : Icons.favorite_border,
-                              size: sp(20),
+                              size: sp(25),
                               color: favoriteProducts.contains(index)
                                   ? pink
                                   : const Color(0xFF9AA2A8),
@@ -399,69 +439,86 @@ class _HomeState extends State<Home> {
             ),
           ),
 
-          // =================================================
-          // INFORMACIÓN
-          // =================================================
+          // =====================================================
+          // INFORMACION
+          // =====================================================
           Expanded(
             flex: 9,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(sp(9), sp(7), sp(9), sp(7)),
+              padding: EdgeInsets.fromLTRB(sp(11), sp(9), sp(11), sp(9)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // CATEGORÍA
+                  // =================================================
+                  // CATEGORIA
+                  // =================================================
                   Text(
                     product.category,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: sp(10),
-                      color: const Color(0xFF98A0A8),
+                      fontFamily: 'Roboto',
+                      fontSize: sp(11),
+                      color: const Color(0xFF8D969F),
+                      letterSpacing: 0.6,
                       fontWeight: FontWeight.w600,
-                      letterSpacing: .4,
+                      height: 1.1,
                     ),
                   ),
 
-                  SizedBox(height: sp(3)),
+                  SizedBox(height: sp(5)),
 
+                  // =================================================
                   // NOMBRE
+                  // =================================================
                   Text(
                     product.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: sp(14),
-
-                      // Un poco más gruesa
+                      fontFamily: 'Roboto',
+                      fontSize: sp(15),
                       fontWeight: FontWeight.w600,
-
-                      color: const Color(0xFF20252B),
+                      color: const Color(0xFF252A2F),
+                      height: 1.15,
                     ),
                   ),
 
-                  SizedBox(height: sp(3)),
+                  SizedBox(height: sp(6)),
 
+                  // =================================================
                   // PRECIO
+                  // =================================================
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         product.price,
                         style: TextStyle(
-                          fontSize: sp(14),
+                          fontFamily: 'Roboto',
+                          fontSize: sp(16),
                           color: pink,
-
-                          // Más gruesa
                           fontWeight: FontWeight.w800,
+                          height: 1.1,
                         ),
                       ),
 
                       if (product.originalPrice != null) ...[
-                        SizedBox(width: sp(5)),
+                        SizedBox(width: sp(7)),
 
-                        Text(
-                          product.originalPrice!,
-                          style: TextStyle(
-                            fontSize: sp(11),
-                            color: const Color(0xFF9AA2A8),
-                            decoration: TextDecoration.lineThrough,
+                        Flexible(
+                          child: Text(
+                            product.originalPrice!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: sp(12),
+                              color: const Color(0xFF9AA2A8),
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.lineThrough,
+                              height: 1.1,
+                            ),
                           ),
                         ),
                       ],
@@ -471,15 +528,11 @@ class _HomeState extends State<Home> {
                   const Spacer(),
 
                   // =================================================
-                  // BOTÓN ADD TO CART
+                  // BOTON
                   // =================================================
                   SizedBox(
                     width: double.infinity,
-
-                    // Un poquito más alto para
-                    // evitar el overflow
-                    height: sp(31),
-
+                    height: sp(38),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(
@@ -492,18 +545,19 @@ class _HomeState extends State<Home> {
                         elevation: 0,
                         backgroundColor: const Color(0xFFFCE4EF),
                         foregroundColor: pink,
-                        padding: EdgeInsets.zero,
+                        padding: EdgeInsets.symmetric(horizontal: sp(5)),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(5),
+                          borderRadius: BorderRadius.circular(7),
                         ),
                       ),
                       child: Text(
                         'ADD TO CART',
+                        maxLines: 1,
                         style: TextStyle(
-                          fontSize: sp(11),
-
-                          // Más gruesa
+                          fontFamily: 'Roboto',
+                          fontSize: sp(12),
                           fontWeight: FontWeight.w800,
+                          height: 1,
                         ),
                       ),
                     ),
@@ -532,10 +586,10 @@ class _HomeState extends State<Home> {
     ];
 
     return Container(
-      height: sp(64),
+      height: sp(76),
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(top: BorderSide(color: Color(0xFFE9EBEE))),
+        border: Border(top: BorderSide(color: Color(0xFFE5E8EB))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -555,21 +609,20 @@ class _HomeState extends State<Home> {
                 children: [
                   Icon(
                     icons[index],
-                    size: sp(23),
+                    size: sp(27),
                     color: selected ? pink : const Color(0xFF9CA4AC),
                   ),
 
-                  SizedBox(height: sp(3)),
+                  SizedBox(height: sp(5)),
 
                   Text(
                     labels[index],
                     style: TextStyle(
-                      fontSize: sp(11),
-
-                      // Un poco más gruesa
-                      fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-
+                      fontFamily: 'Roboto',
+                      fontSize: sp(12),
                       color: selected ? pink : const Color(0xFF9CA4AC),
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                      height: 1,
                     ),
                   ),
                 ],
@@ -582,9 +635,9 @@ class _HomeState extends State<Home> {
   }
 }
 
-// =========================================================
+// =============================================================
 // MODELO DEL PRODUCTO
-// =========================================================
+// =============================================================
 
 class _Product {
   final String category;
