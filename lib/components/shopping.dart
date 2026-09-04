@@ -83,10 +83,13 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
         backgroundColor: Colors.white,
         elevation: 0,
         centerTitle: true,
-        leading: const Icon(
-          Icons.arrow_back_ios_new,
-          color: Colors.black,
-          size: 20,
+        leading: IconButton(
+          onPressed: () => Navigator.maybePop(context),
+          icon: const Icon(
+            Icons.arrow_back_ios_new,
+            color: Colors.black,
+            size: 20,
+          ),
         ),
         title: const Text(
           'Shopping Cart',
@@ -165,7 +168,10 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   Widget _buildCartCard(int index) {
     final item = _items[index];
-    return Container(
+    return InkWell(
+      onTap: () => Navigator.pushNamed(context, '/detail'),
+      borderRadius: BorderRadius.circular(16),
+      child: Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: kCardBg,
@@ -234,7 +240,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ],
       ),
-    );
+       ),
+     );
   }
 
   Widget _buildQuantityStepper(int index, int quantity) {

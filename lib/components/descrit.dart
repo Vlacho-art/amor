@@ -37,7 +37,7 @@ class _DescritState extends State<Descrit> {
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () => Navigator.pushNamed(context, '/shopping'),
             icon: const Icon(Icons.ios_share_rounded, size: 20),
             color: _ink,
             tooltip: 'Share',
