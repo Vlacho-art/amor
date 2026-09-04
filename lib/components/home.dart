@@ -157,7 +157,9 @@ class _HomeState extends State<Home> {
 
                         // Tarjetas más altas para que
                         // las letras grandes tengan espacio.
-                        childAspectRatio: 0.64,
+                        // Se bajó de 0.64 a 0.58 para eliminar
+                        // el overflow del bloque de info/botón.
+                        childAspectRatio: 0.58,
                       ),
                       itemBuilder: (_, index) {
                         return _buildProduct(products[index], index);
@@ -445,7 +447,7 @@ class _HomeState extends State<Home> {
           Expanded(
             flex: 9,
             child: Padding(
-              padding: EdgeInsets.fromLTRB(sp(11), sp(9), sp(11), sp(9)),
+              padding: EdgeInsets.fromLTRB(sp(11), sp(7), sp(11), sp(7)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -466,7 +468,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
-                  SizedBox(height: sp(5)),
+                  SizedBox(height: sp(4)),
 
                   // =================================================
                   // NOMBRE
@@ -484,7 +486,7 @@ class _HomeState extends State<Home> {
                     ),
                   ),
 
-                  SizedBox(height: sp(6)),
+                  SizedBox(height: sp(5)),
 
                   // =================================================
                   // PRECIO
@@ -532,7 +534,7 @@ class _HomeState extends State<Home> {
                   // =================================================
                   SizedBox(
                     width: double.infinity,
-                    height: sp(38),
+                    height: sp(34),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(
