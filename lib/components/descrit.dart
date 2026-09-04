@@ -26,30 +26,38 @@ class _DescritState extends State<Descrit> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: _background,
-      appBar: AppBar(
-        backgroundColor: _background,
-        elevation: 0,
-        leading: IconButton(
-          onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
-          color: _ink,
-          tooltip: 'Back',
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(58),
+        child: Container(
+          color: Colors.white,
+          child: SafeArea(
+            bottom: false,
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () => Navigator.maybePop(context),
+                  icon: const Icon(Icons.arrow_back_ios_new_rounded, size: 20),
+                  color: _ink,
+                  tooltip: 'Back',
+                ),
+                const Spacer(),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.ios_share_rounded, size: 20),
+                  color: _ink,
+                  tooltip: 'Share',
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.favorite_border_rounded, size: 22),
+                  color: _pink,
+                  tooltip: 'Add to favorites',
+                ),
+                const SizedBox(width: 8),
+              ],
+            ),
+          ),
         ),
-        actions: [
-          IconButton(
-            onPressed: () => Navigator.pushNamed(context, '/shopping'),
-            icon: const Icon(Icons.ios_share_rounded, size: 20),
-            color: _ink,
-            tooltip: 'Share',
-          ),
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.shopping_bag_outlined, size: 22),
-            color: _ink,
-            tooltip: 'Shopping bag',
-          ),
-          const SizedBox(width: 8),
-        ],
       ),
       body: SafeArea(
         top: false,
@@ -60,8 +68,27 @@ class _DescritState extends State<Descrit> {
             children: [
               _buildProductImage(),
               const SizedBox(height: 24),
+              const Text(
+                'Velvet Touch Rechargeable Wand',
+                style: TextStyle(
+                  color: _ink,
+                  fontSize: 27,
+                  height: 1.15,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              const SizedBox(height: 8),
               Row(
                 children: [
+                  const Text(
+                    '\$89.00',
+                    style: TextStyle(
+                      color: _pink,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
                   Container(
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
@@ -79,37 +106,7 @@ class _DescritState extends State<Descrit> {
                       ),
                     ),
                   ),
-                  const Spacer(),
-                  const Icon(Icons.star_rounded, color: Color(0xFFF1B54A), size: 18),
-                  const SizedBox(width: 4),
-                  const Text(
-                    '4.9 (128)',
-                    style: TextStyle(
-                      color: _muted,
-                      fontSize: 13,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
                 ],
-              ),
-              const SizedBox(height: 12),
-              const Text(
-                'Velvet Touch Rechargeable Wand',
-                style: TextStyle(
-                  color: _ink,
-                  fontSize: 27,
-                  height: 1.15,
-                  fontWeight: FontWeight.w800,
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                '\$89.00',
-                style: TextStyle(
-                  color: _pink,
-                  fontSize: 22,
-                  fontWeight: FontWeight.w800,
-                ),
               ),
               const SizedBox(height: 28),
               _buildSectionTitle('Description'),
@@ -189,23 +186,6 @@ class _DescritState extends State<Descrit> {
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
-            ),
-          ),
-          Positioned(
-            top: 16,
-            right: 16,
-            child: DecoratedBox(
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.88),
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.favorite_border_rounded),
-                color: _pink,
-                iconSize: 22,
-                tooltip: 'Add to favorites',
-              ),
             ),
           ),
         ],
