@@ -90,8 +90,10 @@ class _DescritState extends State<Descrit> {
                   ),
                   const SizedBox(width: 12),
                   Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 6,
+                    ),
                     decoration: BoxDecoration(
                       color: _softPink,
                       borderRadius: BorderRadius.circular(6),
@@ -117,16 +119,14 @@ class _DescritState extends State<Descrit> {
                 'distinct vibration modes and a flexible head designed to '
                 'reach every curve. Whisper-quiet and fully waterproof for '
                 'versatile use.',
-                style: TextStyle(
-                  color: _muted,
-                  fontSize: 15,
-                  height: 1.55,
-                ),
+                style: TextStyle(color: _muted, fontSize: 15, height: 1.55),
               ),
               const SizedBox(height: 24),
               Row(
                 children: [
-                  Expanded(child: _buildFeature('Material', 'Premium Silicone')),
+                  Expanded(
+                    child: _buildFeature('Material', 'Premium Silicone'),
+                  ),
                   const SizedBox(width: 16),
                   Expanded(child: _buildFeature('Run Time', '120 Minutes')),
                 ],
@@ -266,7 +266,9 @@ class _DescritState extends State<Descrit> {
       icon: Icon(icon, size: 18),
       color: _ink,
       splashRadius: 20,
-      tooltip: icon == Icons.add_rounded ? 'Increase quantity' : 'Decrease quantity',
+      tooltip: icon == Icons.add_rounded
+          ? 'Increase quantity'
+          : 'Decrease quantity',
     );
   }
 }

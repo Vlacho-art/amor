@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'descrit.dart';
 import 'shopping.dart';
 
@@ -11,11 +12,14 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   static const pink = Color(0xFFE91E63);
+
   int selectedCategory = 0;
   int selectedTab = 0;
-  final Set<int> favoriteProducts = <int>{};
 
-  final categories = const ['All', 'Toys', 'Lingerie', 'Wellness'];
+  final Set<int> favoriteProducts = <int>{1};
+
+  final categories = const ['All', 'Toys', 'Lingerie', 'Well'];
+
   final products = const [
     _Product(
       'TOYS',
@@ -35,74 +39,135 @@ class _HomeState extends State<Home> {
     ),
     _Product(
       'WELLNESS',
-      'Starlit Warming Oil',
+      'Santal Warming Oil',
       '\$18.00',
       Icons.local_drink,
       Color(0xFFFFD878),
       'assets/img/product_gel.jpg',
     ),
     _Product(
-      'SILKY',
+      'TOYS',
       'Silky Rabbit 2.0',
       '\$55.00',
       Icons.toys,
       Color(0xFF273036),
       'assets/img/product_bunny.jpg',
       true,
+      '\$75.00',
     ),
   ];
 
+  // =========================================================
+  // ESCALA RESPONSIVA
+  // =========================================================
+
+  late double _s;
+
+  void _computeScale(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+
+    // Escala aumentada para celulares.
+    // Antes llegaba máximo a 1.25.
+    // Ahora puede llegar hasta 1.40.
+    _s = (width / 390).clamp(1.0, 1.40);
+  }
+
+  double sp(double base) => base * _s;
+
   @override
   Widget build(BuildContext context) {
+    _computeScale(context);
+
     return Scaffold(
       backgroundColor: const Color(0xFFFAFAFA),
       body: SafeArea(
         child: Column(
           children: [
             _buildHeader(),
+
             Expanded(
               child: SingleChildScrollView(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 12),
+                padding: EdgeInsets.fromLTRB(sp(16), sp(12), sp(16), sp(14)),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildCategories(),
-                    const SizedBox(height: 10),
+
+                    SizedBox(height: sp(22)),
+
+                    // =================================================
+                    // TITULO
+                    // =================================================
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Featured Products',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w700,
+                        Expanded(
+                          child: Text(
+                            'Featured Products',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: sp(20),
+                              fontWeight: FontWeight.w700,
+                              height: 1.2,
+                              color: const Color(0xFF20252A),
+                            ),
                           ),
                         ),
-                        Text(
-                          'Filters  ⚙',
-                          style: TextStyle(fontSize: 9, color: pink),
+
+                        SizedBox(width: sp(12)),
+
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(
+                              'Filters',
+                              style: TextStyle(
+                                fontFamily: 'Roboto',
+                                fontSize: sp(14),
+                                fontWeight: FontWeight.w600,
+                                color: pink,
+                              ),
+                            ),
+
+                            SizedBox(width: sp(6)),
+
+                            Icon(Icons.tune, size: sp(19), color: pink),
+                          ],
                         ),
                       ],
                     ),
-                    const SizedBox(height: 5),
+
+                    SizedBox(height: sp(14)),
+
+                    // =================================================
+                    // PRODUCTOS
+                    // =================================================
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: products.length,
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 5,
-                            mainAxisSpacing: 5,
-                            childAspectRatio: .68,
-                          ),
-                      itemBuilder: (_, index) =>
-                          _buildProduct(products[index], index),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+
+                        crossAxisSpacing: sp(12),
+                        mainAxisSpacing: sp(14),
+
+                        // Tarjetas más altas para que
+                        // las letras grandes tengan espacio.
+                        childAspectRatio: 0.64,
+                      ),
+                      itemBuilder: (_, index) {
+                        return _buildProduct(products[index], index);
+                      },
                     ),
                   ],
                 ),
               ),
             ),
+
             _buildBottomNavigation(),
           ],
         ),
@@ -110,18 +175,32 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // =========================================================
+  // HEADER
+  // =========================================================
+
   Widget _buildHeader() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(10, 8, 10, 3),
+      padding: EdgeInsets.fromLTRB(sp(18), sp(14), sp(18), sp(10)),
       child: Row(
         children: [
-          const Icon(Icons.favorite, color: pink, size: 16),
-          const SizedBox(width: 4),
-          const Text(
+          Icon(Icons.favorite, color: pink, size: sp(28)),
+
+          SizedBox(width: sp(9)),
+
+          Text(
             "L'Amour",
-            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+            style: TextStyle(
+              fontFamily: 'Roboto',
+              fontSize: sp(24),
+              fontWeight: FontWeight.w800,
+              height: 1.1,
+              color: const Color(0xFF20252A),
+            ),
           ),
+
           const Spacer(),
+<<<<<<< HEAD
           const Icon(Icons.search, size: 15, color: Color(0xFF536273)),
           const SizedBox(width: 15),
           IconButton(
@@ -142,6 +221,42 @@ class _HomeState extends State<Home> {
                         color: pink, shape: BoxShape.circle),
                     child: const Text('2',
                         style: TextStyle(color: Colors.white, fontSize: 7)),
+=======
+
+          Icon(Icons.search, size: sp(28), color: const Color(0xFF536273)),
+
+          SizedBox(width: sp(22)),
+
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Icon(
+                Icons.shopping_bag_outlined,
+                size: sp(30),
+                color: const Color(0xFF536273),
+              ),
+
+              Positioned(
+                right: -sp(8),
+                top: -sp(9),
+                child: Container(
+                  width: sp(22),
+                  height: sp(22),
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: pink,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    '2',
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      color: Colors.white,
+                      fontSize: sp(12),
+                      fontWeight: FontWeight.w800,
+                      height: 1,
+                    ),
+>>>>>>> d43049cdc05f0871af7c9d551e1a6cce00fdf183
                   ),
                 ),
               ],
@@ -152,33 +267,47 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // =========================================================
+  // CATEGORIAS
+  // =========================================================
+
   Widget _buildCategories() {
     return SizedBox(
-      height: 26,
+      height: sp(48),
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: categories.length,
-        separatorBuilder: (_, _) => const SizedBox(width: 6),
+        separatorBuilder: (_, _) {
+          return SizedBox(width: sp(10));
+        },
         itemBuilder: (_, index) {
           final selected = selectedCategory == index;
+
           return GestureDetector(
-            onTap: () => setState(() => selectedCategory = index),
+            onTap: () {
+              setState(() {
+                selectedCategory = index;
+              });
+            },
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 13),
+              padding: EdgeInsets.symmetric(horizontal: sp(20)),
               alignment: Alignment.center,
               decoration: BoxDecoration(
                 color: selected ? pink : Colors.white,
-                borderRadius: BorderRadius.circular(5),
+                borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: selected ? pink : const Color(0xFFE2E5E9),
+                  color: selected ? pink : const Color(0xFFD5DADE),
+                  width: 1,
                 ),
               ),
               child: Text(
                 categories[index],
                 style: TextStyle(
-                  fontSize: 8,
+                  fontFamily: 'Roboto',
+                  fontSize: sp(14),
+                  height: 1,
                   color: selected ? Colors.white : const Color(0xFF4F5965),
-                  fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
                 ),
               ),
             ),
@@ -188,16 +317,23 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // =========================================================
+  // PRODUCTO
+  // =========================================================
+
   Widget _buildProduct(_Product product, int index) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: const Color(0xFFE7E9EC)),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: const Color(0xFFE1E5E8), width: 1),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // =====================================================
+          // IMAGEN
+          // =====================================================
           Expanded(
             flex: 12,
             child: GestureDetector(
@@ -213,47 +349,74 @@ class _HomeState extends State<Home> {
                     decoration: BoxDecoration(
                       color: product.background,
                       borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(6),
+                        top: Radius.circular(12),
                       ),
                     ),
                     child: ClipRRect(
                       borderRadius: const BorderRadius.vertical(
-                        top: Radius.circular(6),
+                        top: Radius.circular(12),
                       ),
                       child: Image.asset(
                         product.imagePath,
                         width: double.infinity,
                         height: double.infinity,
+
+                        // Mantiene la imagen sin deformarla.
                         fit: BoxFit.cover,
+
+                        // Máxima calidad disponible.
+                        filterQuality: FilterQuality.high,
+
+                        alignment: Alignment.center,
+
+                        errorBuilder: (_, _, _) {
+                          return Center(
+                            child: Icon(
+                              product.icon,
+                              size: sp(45),
+                              color: Colors.black.withValues(alpha: 0.35),
+                            ),
+                          );
+                        },
                       ),
                     ),
                   ),
+
+                  // =================================================
+                  // SALE
+                  // =================================================
                   if (product.dark)
                     Positioned(
-                      left: 5,
-                      top: 5,
+                      left: sp(10),
+                      top: sp(10),
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 5,
-                          vertical: 2,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: sp(11),
+                          vertical: sp(6),
                         ),
                         decoration: BoxDecoration(
                           color: pink,
-                          borderRadius: BorderRadius.circular(3),
+                          borderRadius: BorderRadius.circular(6),
                         ),
-                        child: const Text(
+                        child: Text(
                           'SALE',
                           style: TextStyle(
+                            fontFamily: 'Roboto',
                             color: Colors.white,
-                            fontSize: 7,
-                            fontWeight: FontWeight.bold,
+                            fontSize: sp(12),
+                            fontWeight: FontWeight.w800,
+                            height: 1,
                           ),
                         ),
                       ),
                     ),
+
+                  // =================================================
+                  // FAVORITO
+                  // =================================================
                   Positioned(
-                    right: 5,
-                    top: 5,
+                    right: sp(10),
+                    top: sp(10),
                     child: GestureDetector(
                       onTap: () {
                         setState(() {
@@ -264,59 +427,135 @@ class _HomeState extends State<Home> {
                           }
                         });
                       },
-                      child: Icon(
-                        favoriteProducts.contains(index)
-                            ? Icons.favorite
-                            : Icons.favorite_border,
-                        size: 14,
-                        color: favoriteProducts.contains(index)
-                            ? pink
-                            : const Color(0xFF9AA2A8),
-                      ),
+                      child: product.dark
+                          ? Container(
+                              width: sp(36),
+                              height: sp(36),
+                              alignment: Alignment.center,
+                              decoration: const BoxDecoration(
+                                color: Color(0xFFEDEFF1),
+                                shape: BoxShape.circle,
+                              ),
+                              child: Icon(
+                                favoriteProducts.contains(index)
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                size: sp(21),
+                                color: favoriteProducts.contains(index)
+                                    ? pink
+                                    : const Color(0xFF4F5965),
+                              ),
+                            )
+                          : Icon(
+                              favoriteProducts.contains(index)
+                                  ? Icons.favorite
+                                  : Icons.favorite_border,
+                              size: sp(25),
+                              color: favoriteProducts.contains(index)
+                                  ? pink
+                                  : const Color(0xFF9AA2A8),
+                            ),
                     ),
                   ),
                 ],
               ),
             ),
           ),
+
+          // =====================================================
+          // INFORMACION
+          // =====================================================
           Expanded(
-            flex: 7,
+            flex: 9,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(6, 5, 6, 4),
+              padding: EdgeInsets.fromLTRB(sp(11), sp(9), sp(11), sp(9)),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // =================================================
+                  // CATEGORIA
+                  // =================================================
                   Text(
                     product.category,
-                    style: const TextStyle(
-                      fontSize: 6,
-                      color: Color(0xFF98A0A8),
-                      letterSpacing: .3,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: sp(11),
+                      color: const Color(0xFF8D969F),
+                      letterSpacing: 0.6,
+                      fontWeight: FontWeight.w600,
+                      height: 1.1,
                     ),
                   ),
-                  const SizedBox(height: 3),
+
+                  SizedBox(height: sp(5)),
+
+                  // =================================================
+                  // NOMBRE
+                  // =================================================
                   Text(
                     product.name,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontSize: 9,
-                      fontWeight: FontWeight.w500,
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: sp(15),
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFF252A2F),
+                      height: 1.15,
                     ),
                   ),
-                  const SizedBox(height: 2),
-                  Text(
-                    product.price,
-                    style: const TextStyle(
-                      fontSize: 9,
-                      color: pink,
-                      fontWeight: FontWeight.w800,
-                    ),
+
+                  SizedBox(height: sp(6)),
+
+                  // =================================================
+                  // PRECIO
+                  // =================================================
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Text(
+                        product.price,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: sp(16),
+                          color: pink,
+                          fontWeight: FontWeight.w800,
+                          height: 1.1,
+                        ),
+                      ),
+
+                      if (product.originalPrice != null) ...[
+                        SizedBox(width: sp(7)),
+
+                        Flexible(
+                          child: Text(
+                            product.originalPrice!,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontFamily: 'Roboto',
+                              fontSize: sp(12),
+                              color: const Color(0xFF9AA2A8),
+                              fontWeight: FontWeight.w500,
+                              decoration: TextDecoration.lineThrough,
+                              height: 1.1,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
+
                   const Spacer(),
+
+                  // =================================================
+                  // BOTON
+                  // =================================================
                   SizedBox(
                     width: double.infinity,
-                    height: 21,
+                    height: sp(38),
                     child: ElevatedButton(
                       onPressed: () {
                         Navigator.of(context).push(
@@ -329,16 +568,19 @@ class _HomeState extends State<Home> {
                         elevation: 0,
                         backgroundColor: const Color(0xFFFCE4EF),
                         foregroundColor: pink,
-                        padding: EdgeInsets.zero,
+                        padding: EdgeInsets.symmetric(horizontal: sp(5)),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(7),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'ADD TO CART',
+                        maxLines: 1,
                         style: TextStyle(
-                          fontSize: 7,
+                          fontFamily: 'Roboto',
+                          fontSize: sp(12),
                           fontWeight: FontWeight.w800,
+                          height: 1,
                         ),
                       ),
                     ),
@@ -352,43 +594,62 @@ class _HomeState extends State<Home> {
     );
   }
 
+  // =========================================================
+  // BARRA INFERIOR
+  // =========================================================
+
   Widget _buildBottomNavigation() {
     const labels = ['Home', 'Catalog', 'Orders', 'Profile'];
+
     const icons = [
       Icons.home_outlined,
       Icons.view_list_outlined,
       Icons.receipt_long_outlined,
       Icons.person_outline,
     ];
+
     return Container(
-      height: 49,
+      height: sp(76),
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(top: BorderSide(color: Color(0xFFE9EBEE))),
+        border: Border(top: BorderSide(color: Color(0xFFE5E8EB))),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(labels.length, (index) {
           final selected = selectedTab == index;
+
           return GestureDetector(
-            onTap: () => setState(() => selectedTab = index),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Icon(
-                  icons[index],
-                  size: 15,
-                  color: selected ? pink : const Color(0xFF9CA4AC),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  labels[index],
-                  style: TextStyle(
-                    fontSize: 7,
+            onTap: () {
+              setState(() {
+                selectedTab = index;
+              });
+            },
+            child: SizedBox(
+              width: sp(70),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    icons[index],
+                    size: sp(27),
                     color: selected ? pink : const Color(0xFF9CA4AC),
                   ),
-                ),
-              ],
+
+                  SizedBox(height: sp(5)),
+
+                  Text(
+                    labels[index],
+                    style: TextStyle(
+                      fontFamily: 'Roboto',
+                      fontSize: sp(12),
+                      color: selected ? pink : const Color(0xFF9CA4AC),
+                      fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
+                      height: 1,
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
         }),
@@ -396,6 +657,10 @@ class _HomeState extends State<Home> {
     );
   }
 }
+
+// =============================================================
+// MODELO DEL PRODUCTO
+// =============================================================
 
 class _Product {
   final String category;
@@ -405,6 +670,7 @@ class _Product {
   final Color background;
   final String imagePath;
   final bool dark;
+  final String? originalPrice;
 
   const _Product(
     this.category,
@@ -414,5 +680,6 @@ class _Product {
     this.background,
     this.imagePath, [
     this.dark = false,
+    this.originalPrice,
   ]);
 }
