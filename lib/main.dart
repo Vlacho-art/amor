@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/shopping.dart';
 
 void main() {
   runApp(const MainApp());
