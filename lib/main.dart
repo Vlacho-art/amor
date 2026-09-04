@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'components/shopping.dart';
 
 void main() {
   runApp(const MainApp());
@@ -12,7 +11,9 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: LoginScreen()),
+      home: Scaffold(
+        body: LoginScreen(),
+      ),
     );
   }
 }
@@ -66,7 +67,10 @@ class _LoginScreenState extends State<LoginScreen> {
             const Text(
               'Sign in to your private account',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 16, color: kGreyText),
+              style: TextStyle(
+                fontSize: 16,
+                color: kGreyText,
+              ),
             ),
             const SizedBox(height: 40),
             _buildLabel('EMAIL ADDRESS'),
@@ -96,7 +100,10 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: const Text(
                   'Forgot Password?',
-                  style: TextStyle(fontSize: 15, color: kGreyText),
+                  style: TextStyle(
+                    fontSize: 15,
+                    color: kGreyText,
+                  ),
                 ),
               ),
             ),
@@ -126,7 +133,10 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Container(
             width: 64,
             height: 64,
-            decoration: const BoxDecoration(color: kLogoBg),
+            decoration: BoxDecoration(
+              color: kLogoBg,
+              borderRadius: BorderRadius.circular(8),
+            ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -199,10 +209,8 @@ class _LoginScreenState extends State<LoginScreen> {
           hintText: hintText,
           hintStyle: const TextStyle(color: Color(0xFFB4B4BA)),
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(
-            horizontal: 16,
-            vertical: 16,
-          ),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         ),
       ),
     );
@@ -224,7 +232,10 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         child: const Text(
           'Sign In',
-          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
+          style: TextStyle(
+            fontSize: 17,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
