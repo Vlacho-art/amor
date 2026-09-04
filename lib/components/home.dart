@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'descrit.dart';
+import 'shopping.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -11,17 +13,43 @@ class _HomeState extends State<Home> {
   static const pink = Color(0xFFE91E63);
   int selectedCategory = 0;
   int selectedTab = 0;
+  final Set<int> favoriteProducts = <int>{};
 
   final categories = const ['All', 'Toys', 'Lingerie', 'Wellness'];
   final products = const [
-    _Product('TOYS', 'Velvet Touch Wand', '\$49.99', Icons.auto_fix_high,
-        Color(0xFFDDEDE0)),
-    _Product('LINGERIE', 'Midnight Lace...', '\$34.50', Icons.checkroom,
-        Color(0xFFF1E8DA)),
-    _Product('WELLNESS', 'Starlit Warming Oil', '\$18.00', Icons.local_drink,
-        Color(0xFFFFD878)),
-    _Product('SILKY', 'Silky Rabbit 2.0', '\$55.00', Icons.toys,
-        Color(0xFF273036), true),
+    _Product(
+      'TOYS',
+      'Velvet Touch Wand',
+      '\$49.99',
+      Icons.auto_fix_high,
+      Color(0xFFDDEDE0),
+      'assets/img/product_perfume.jpg',
+    ),
+    _Product(
+      'LINGERIE',
+      'Midnight Lace...',
+      '\$34.50',
+      Icons.checkroom,
+      Color(0xFFF1E8DA),
+      'assets/img/product_lingerie.jpg',
+    ),
+    _Product(
+      'WELLNESS',
+      'Starlit Warming Oil',
+      '\$18.00',
+      Icons.local_drink,
+      Color(0xFFFFD878),
+      'assets/img/product_gel.jpg',
+    ),
+    _Product(
+      'SILKY',
+      'Silky Rabbit 2.0',
+      '\$55.00',
+      Icons.toys,
+      Color(0xFF273036),
+      'assets/img/product_bunny.jpg',
+      true,
+    ),
   ];
 
   @override
@@ -39,30 +67,37 @@ class _HomeState extends State<Home> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildCategories(),
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text('Featured Products',
-                            style: TextStyle(
-                                fontSize: 11, fontWeight: FontWeight.w700)),
-                        Text('Filters  ⚙',
-                            style: TextStyle(fontSize: 9, color: pink)),
+                        const Text(
+                          'Featured Products',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        Text(
+                          'Filters  ⚙',
+                          style: TextStyle(fontSize: 9, color: pink),
+                        ),
                       ],
                     ),
-                    const SizedBox(height: 8),
+                    const SizedBox(height: 5),
                     GridView.builder(
                       shrinkWrap: true,
                       physics: const NeverScrollableScrollPhysics(),
                       itemCount: products.length,
                       gridDelegate:
                           const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 7,
-                        mainAxisSpacing: 8,
-                        childAspectRatio: .68,
-                      ),
-                      itemBuilder: (_, index) => _buildProduct(products[index]),
+                            crossAxisCount: 2,
+                            crossAxisSpacing: 5,
+                            mainAxisSpacing: 5,
+                            childAspectRatio: .68,
+                          ),
+                      itemBuilder: (_, index) =>
+                          _buildProduct(products[index], index),
                     ),
                   ],
                 ),
@@ -82,25 +117,34 @@ class _HomeState extends State<Home> {
         children: [
           const Icon(Icons.favorite, color: pink, size: 16),
           const SizedBox(width: 4),
-          const Text("L'Amour",
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800)),
+          const Text(
+            "L'Amour",
+            style: TextStyle(fontSize: 11, fontWeight: FontWeight.w800),
+          ),
           const Spacer(),
           const Icon(Icons.search, size: 15, color: Color(0xFF536273)),
           const SizedBox(width: 15),
           Stack(
             clipBehavior: Clip.none,
             children: [
-              const Icon(Icons.shopping_bag_outlined,
-                  size: 17, color: Color(0xFF536273)),
+              const Icon(
+                Icons.shopping_bag_outlined,
+                size: 17,
+                color: Color(0xFF536273),
+              ),
               Positioned(
                 right: -5,
                 top: -6,
                 child: Container(
                   padding: const EdgeInsets.all(2),
-                  decoration:
-                      const BoxDecoration(color: pink, shape: BoxShape.circle),
-                  child: const Text('2',
-                      style: TextStyle(color: Colors.white, fontSize: 7)),
+                  decoration: const BoxDecoration(
+                    color: pink,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Text(
+                    '2',
+                    style: TextStyle(color: Colors.white, fontSize: 7),
+                  ),
                 ),
               ),
             ],
@@ -128,14 +172,17 @@ class _HomeState extends State<Home> {
                 color: selected ? pink : Colors.white,
                 borderRadius: BorderRadius.circular(5),
                 border: Border.all(
-                    color: selected ? pink : const Color(0xFFE2E5E9)),
+                  color: selected ? pink : const Color(0xFFE2E5E9),
+                ),
               ),
-              child: Text(categories[index],
-                  style: TextStyle(
-                      fontSize: 8,
-                      color: selected ? Colors.white : const Color(0xFF4F5965),
-                      fontWeight:
-                          selected ? FontWeight.w700 : FontWeight.w400)),
+              child: Text(
+                categories[index],
+                style: TextStyle(
+                  fontSize: 8,
+                  color: selected ? Colors.white : const Color(0xFF4F5965),
+                  fontWeight: selected ? FontWeight.w700 : FontWeight.w400,
+                ),
+              ),
             ),
           );
         },
@@ -143,7 +190,7 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget _buildProduct(_Product product) {
+  Widget _buildProduct(_Product product, int index) {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
@@ -155,46 +202,83 @@ class _HomeState extends State<Home> {
         children: [
           Expanded(
             flex: 12,
-            child: Stack(
-              children: [
-                Container(
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                    color: product.background,
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(6)),
-                  ),
-                  child: Center(
-                    child: Icon(product.icon,
-                        size: 64,
-                        color: product.dark
-                            ? const Color(0xFFE8E9E5)
-                            : const Color(0xFFB77652)),
-                  ),
-                ),
-                if (product.dark)
-                  Positioned(
-                    left: 5,
-                    top: 5,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 2),
-                      decoration: BoxDecoration(
-                          color: pink, borderRadius: BorderRadius.circular(3)),
-                      child: const Text('SALE',
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 7,
-                              fontWeight: FontWeight.bold)),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute<void>(builder: (_) => const Descrit()),
+                );
+              },
+              child: Stack(
+                children: [
+                  Container(
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                      color: product.background,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(6),
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(6),
+                      ),
+                      child: Image.asset(
+                        product.imagePath,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                      ),
                     ),
                   ),
-                const Positioned(
-                  right: 5,
-                  top: 5,
-                  child: Icon(Icons.favorite_border,
-                      size: 14, color: Color(0xFF9AA2A8)),
-                ),
-              ],
+                  if (product.dark)
+                    Positioned(
+                      left: 5,
+                      top: 5,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5,
+                          vertical: 2,
+                        ),
+                        decoration: BoxDecoration(
+                          color: pink,
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: const Text(
+                          'SALE',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 7,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ),
+                  Positioned(
+                    right: 5,
+                    top: 5,
+                    child: GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          if (favoriteProducts.contains(index)) {
+                            favoriteProducts.remove(index);
+                          } else {
+                            favoriteProducts.add(index);
+                          }
+                        });
+                      },
+                      child: Icon(
+                        favoriteProducts.contains(index)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        size: 14,
+                        color: favoriteProducts.contains(index)
+                            ? pink
+                            : const Color(0xFF9AA2A8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
           Expanded(
@@ -204,40 +288,61 @@ class _HomeState extends State<Home> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(product.category,
-                      style: const TextStyle(
-                          fontSize: 6,
-                          color: Color(0xFF98A0A8),
-                          letterSpacing: .3)),
+                  Text(
+                    product.category,
+                    style: const TextStyle(
+                      fontSize: 6,
+                      color: Color(0xFF98A0A8),
+                      letterSpacing: .3,
+                    ),
+                  ),
                   const SizedBox(height: 3),
-                  Text(product.name,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 9, fontWeight: FontWeight.w500)),
+                  Text(
+                    product.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 9,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                   const SizedBox(height: 2),
-                  Text(product.price,
-                      style: const TextStyle(
-                          fontSize: 9,
-                          color: pink,
-                          fontWeight: FontWeight.w800)),
+                  Text(
+                    product.price,
+                    style: const TextStyle(
+                      fontSize: 9,
+                      color: pink,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
                   const Spacer(),
                   SizedBox(
                     width: double.infinity,
                     height: 21,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute<void>(
+                            builder: (_) => const ShoppingCartScreen(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         elevation: 0,
                         backgroundColor: const Color(0xFFFCE4EF),
                         foregroundColor: pink,
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4)),
+                          borderRadius: BorderRadius.circular(4),
+                        ),
                       ),
-                      child: const Text('ADD TO CART',
-                          style: TextStyle(
-                              fontSize: 7, fontWeight: FontWeight.w800)),
+                      child: const Text(
+                        'ADD TO CART',
+                        style: TextStyle(
+                          fontSize: 7,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -255,13 +360,14 @@ class _HomeState extends State<Home> {
       Icons.home_outlined,
       Icons.view_list_outlined,
       Icons.receipt_long_outlined,
-      Icons.person_outline
+      Icons.person_outline,
     ];
     return Container(
       height: 49,
       decoration: const BoxDecoration(
-          color: Colors.white,
-          border: Border(top: BorderSide(color: Color(0xFFE9EBEE)))),
+        color: Colors.white,
+        border: Border(top: BorderSide(color: Color(0xFFE9EBEE))),
+      ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(labels.length, (index) {
@@ -271,11 +377,19 @@ class _HomeState extends State<Home> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(icons[index], size: 15, color: selected ? pink : const Color(0xFF9CA4AC)),
+                Icon(
+                  icons[index],
+                  size: 15,
+                  color: selected ? pink : const Color(0xFF9CA4AC),
+                ),
                 const SizedBox(height: 2),
-                Text(labels[index],
-                    style: TextStyle(
-                        fontSize: 7, color: selected ? pink : const Color(0xFF9CA4AC))),
+                Text(
+                  labels[index],
+                  style: TextStyle(
+                    fontSize: 7,
+                    color: selected ? pink : const Color(0xFF9CA4AC),
+                  ),
+                ),
               ],
             ),
           );
@@ -291,8 +405,16 @@ class _Product {
   final String price;
   final IconData icon;
   final Color background;
+  final String imagePath;
   final bool dark;
 
-  const _Product(this.category, this.name, this.price, this.icon, this.background,
-      [this.dark = false]);
+  const _Product(
+    this.category,
+    this.name,
+    this.price,
+    this.icon,
+    this.background,
+    this.imagePath, [
+    this.dark = false,
+  ]);
 }

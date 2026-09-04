@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'components/home.dart';
 
 void main() {
   runApp(const MainApp());
@@ -220,7 +221,13 @@ class _LoginScreenState extends State<LoginScreen> {
     return SizedBox(
       height: 56,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Navigator.of(context).pushReplacement(
+            MaterialPageRoute<void>(
+              builder: (_) => const Home(),
+            ),
+          );
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: kPink,
           foregroundColor: Colors.white,
