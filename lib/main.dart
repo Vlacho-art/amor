@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import 'components/descrit.dart';
 import 'components/home.dart';
+import 'components/shopping.dart';
 
 void main() {
   runApp(const MainApp());
@@ -10,11 +13,15 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: LoginScreen(),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (_) => const Scaffold(body: LoginScreen()),
+        '/home': (_) => const Home(),
+        '/shopping': (_) => const ShoppingCartScreen(),
+        '/detail': (_) => const Descrit(),
+      },
     );
   }
 }
@@ -29,7 +36,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _obscurePassword = true;
+  final bool _obscurePassword = true;
 
   static const Color kPink = Color(0xFFE0245E);
   static const Color kDarkText = Color(0xFF1A1A2E);
@@ -68,10 +75,7 @@ class _LoginScreenState extends State<LoginScreen> {
             const Text(
               'Sign in to your private account',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 16,
-                color: kGreyText,
-              ),
+              style: TextStyle(fontSize: 16, color: kGreyText),
             ),
             const SizedBox(height: 40),
             _buildLabel('EMAIL ADDRESS'),
@@ -93,7 +97,8 @@ class _LoginScreenState extends State<LoginScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () =>
+                    Navigator.pushReplacementNamed(context, '/home'),
                 style: TextButton.styleFrom(
                   padding: EdgeInsets.zero,
                   minimumSize: const Size(0, 0),
@@ -101,10 +106,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
                 child: const Text(
                   'Forgot Password?',
-                  style: TextStyle(
-                    fontSize: 15,
-                    color: kGreyText,
-                  ),
+                  style: TextStyle(fontSize: 15, color: kGreyText),
                 ),
               ),
             ),
@@ -210,8 +212,10 @@ class _LoginScreenState extends State<LoginScreen> {
           hintText: hintText,
           hintStyle: const TextStyle(color: Color(0xFFB4B4BA)),
           border: InputBorder.none,
-          contentPadding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 16,
+          ),
         ),
       ),
     );
@@ -223,26 +227,21 @@ class _LoginScreenState extends State<LoginScreen> {
       child: ElevatedButton(
         onPressed: () {
           Navigator.of(context).pushReplacement(
-            MaterialPageRoute<void>(
-              builder: (_) => const Home(),
-            ),
+            MaterialPageRoute<void>(builder: (_) => const Home()),
           );
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: kPink,
           foregroundColor: Colors.white,
           elevation: 4,
-          shadowColor: kPink.withOpacity(0.4),
+          shadowColor: kPink.withValues(alpha: 0.4),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
         ),
         child: const Text(
           'Sign In',
-          style: TextStyle(
-            fontSize: 17,
-            fontWeight: FontWeight.bold,
-          ),
+          style: TextStyle(fontSize: 17, fontWeight: FontWeight.bold),
         ),
       ),
     );
