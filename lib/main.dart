@@ -130,7 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
         height: 96,
         decoration: const BoxDecoration(
           shape: BoxShape.circle,
-          color: Color(0xFFF3F3F5),
+          color: Color(0xFFE8F1F5),
         ),
         child: Center(
           child: Container(
@@ -138,7 +138,7 @@ class _LoginScreenState extends State<LoginScreen> {
             height: 64,
             decoration: BoxDecoration(
               color: kLogoBg,
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.zero,
             ),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
