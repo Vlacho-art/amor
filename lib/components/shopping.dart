@@ -87,27 +87,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
     final horizontalPadding = 16.0 * scale;
 
     return Scaffold(
-<<<<<<< HEAD
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 0,
-        centerTitle: true,
-        leading: IconButton(
-          onPressed: () => Navigator.maybePop(context),
-          icon: const Icon(
-            Icons.arrow_back_ios_new,
-            color: Colors.black,
-            size: 20,
-          ),
-        ),
-        title: const Text(
-          'Shopping Cart',
-          style: TextStyle(
-            color: Colors.black,
-            fontWeight: FontWeight.w600,
-            fontSize: 18,
-=======
       backgroundColor: kCardBg,
       appBar: PreferredSize(
         preferredSize: const Size.fromHeight(kToolbarHeight),
@@ -120,10 +99,15 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
             backgroundColor: Colors.white,
             elevation: 0,
             centerTitle: true,
-            leading: Icon(
-              Icons.arrow_back_ios_new,
-              color: Colors.black,
-              size: 20 * scale,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new,
+                color: Colors.black,
+                size: 20 * scale,
+              ),
+              onPressed: () {
+                Navigator.of(context).maybePop();
+              },
             ),
             title: Text(
               'Shopping Cart',
@@ -133,7 +117,6 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
                 fontSize: 18 * scale,
               ),
             ),
->>>>>>> d43049cdc05f0871af7c9d551e1a6cce00fdf183
           ),
         ),
       ),
@@ -225,16 +208,8 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
 
   Widget _buildCartCard(int index, double scale) {
     final item = _items[index];
-<<<<<<< HEAD
-    return InkWell(
-      onTap: () => Navigator.pushNamed(context, '/detail'),
-      borderRadius: BorderRadius.circular(16),
-      child: Container(
-      padding: const EdgeInsets.all(12),
-=======
     return Container(
       padding: EdgeInsets.all(12 * scale),
->>>>>>> d43049cdc05f0871af7c9d551e1a6cce00fdf183
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16),
@@ -311,8 +286,7 @@ class _ShoppingCartScreenState extends State<ShoppingCartScreen> {
           ),
         ],
       ),
-       ),
-     );
+    );
   }
 
   Widget _buildQuantityStepper(int index, int quantity, double scale) {
