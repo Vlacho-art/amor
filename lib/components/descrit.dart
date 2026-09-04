@@ -182,56 +182,29 @@ class _DescritState extends State<Descrit> {
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Positioned(
-            top: 22,
-            right: 24,
-            child: Icon(
-              Icons.favorite_border_rounded,
-              color: _pink.withValues(alpha: 0.7),
-              size: 25,
-            ),
-          ),
-          Container(
-            width: 112,
-            height: 220,
-            decoration: BoxDecoration(
-              color: const Color(0xFFE8A6B9),
-              borderRadius: BorderRadius.circular(56),
-              boxShadow: [
-                BoxShadow(
-                  color: _pink.withValues(alpha: 0.18),
-                  blurRadius: 24,
-                  offset: const Offset(8, 12),
-                ),
-              ],
-            ),
-            child: Align(
-              alignment: Alignment.bottomCenter,
-              child: Container(
-                width: 112,
-                height: 94,
-                decoration: const BoxDecoration(
-                  color: Color(0xFFD97896),
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(56),
-                  ),
-                ),
-                child: const Icon(
-                  Icons.power_settings_new_rounded,
-                  color: Colors.white70,
-                  size: 27,
-                ),
-              ),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(24),
+            child: Image.asset(
+              'assets/img/maquillaje.jpg',
+              width: double.infinity,
+              height: double.infinity,
+              fit: BoxFit.cover,
             ),
           ),
           Positioned(
-            top: 44,
-            child: Container(
-              width: 135,
-              height: 62,
+            top: 16,
+            right: 16,
+            child: DecoratedBox(
               decoration: BoxDecoration(
-                color: const Color(0xFFF1C1CF),
-                borderRadius: BorderRadius.circular(34),
+                color: Colors.white.withValues(alpha: 0.88),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.favorite_border_rounded),
+                color: _pink,
+                iconSize: 22,
+                tooltip: 'Add to favorites',
               ),
             ),
           ),
